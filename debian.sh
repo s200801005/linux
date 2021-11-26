@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 if [ -z ${TMPDIR} ]; then
 	TMPDIR=/tmp
-	mkdir -p ${TMPDIR}
+	mkdir -pv ${TMPDIR}
 fi
 cd ${TMPDIR}
 #############
@@ -76,7 +76,7 @@ tmoe_locale_gen() {
 if [ $(command -v curl) ]; then
 	curl -Lvo .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
 elif [ $(command -v aria2c) ]; then
-	aria2c --allow-overwrite=true -o .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
+	aria2c --no-conf --allow-overwrite=true -o .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
 elif [ $(command -v wget) ]; then
 	wget -O .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
 else
