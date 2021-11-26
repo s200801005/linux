@@ -539,7 +539,7 @@ check_tmoe_linux_desktop_link() {
 creat_tmoe_linux_desktop_icon() {
     if [ ! $(command -v debian-i) ]; then
         cd /usr/local/bin
-        curl -Lv -o debian-i 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+        curl -Lv -o debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
         chmod +x debian-i
     fi
     cp ${TMOE_TOOL_DIR}/app/lnk/tmoe-linux.desktop ${APPS_LNK_DIR}/tmoe-linux.desktop
