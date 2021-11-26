@@ -149,9 +149,9 @@ fi
 ############
 if [ ! $(command -v debian-i) ]; then
     if [ -e "/usr/bin/curl" ]; then
-        curl -Lo /usr/local/bin/debian-i 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+        curl -Lo /usr/local/bin/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
     else
-        wget -qO /usr/local/bin/debian-i 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+        wget -qO /usr/local/bin/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
     fi
 fi
 chmod 777 /usr/local/bin/debian-i
@@ -320,7 +320,7 @@ cat >~/.zlogin <<-'EndOfFile'
 		git fetch --depth=1
 		git reset --hard origin/master
 		git pull origin master --allow-unrelated-histories
-		curl -Lv -o ${LOCAL_BIN_DIR}/debian-i 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+		curl -Lv -o ${LOCAL_BIN_DIR}/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 		chmod +x ${LOCAL_BIN_DIR}/debian-i
 		${LOCAL_BIN_DIR}/debian-i passwd
 	fi

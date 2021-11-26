@@ -1257,8 +1257,8 @@ cat >${PREFIX}/bin/startxsdl <<-ENDOFXSDL
 ENDOFXSDL
 creat_linux_container_remove_script
 ################
-#wget -qO ${PREFIX}/bin/debian-i 'https://gitee.com/mo2/linux/raw/master/debian.sh'
-aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://gitee.com/mo2/linux/raw/master/manager.sh'
+#wget -qO ${PREFIX}/bin/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/debian.sh'
+aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/manager.sh'
 #############
 if [ ! -L '/data/data/com.termux/files/home/storage/external-1' ]; then
 	sed -i 's@^command+=" --mount=/data/data/com.termux/files/home/storage/external-1@#&@g' ${PREFIX}/bin/debian 2>/dev/null
@@ -1288,16 +1288,16 @@ if [ ! -e "neofetch" ]; then
 	curl -Lo "neofetch" 'https://gitee.com/mirrors/neofetch/raw/master/neofetch'
 fi
 if [ ! -e "debian-i" ]; then
-	curl -Lo "debian-i" 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+	curl -Lo "debian-i" 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 fi
 chmod +x neofetch debian-i
 ${TMOE_CHROOT_PREFIX} cp neofetch debian-i ${DEBIAN_CHROOT}/usr/local/bin
 
 ${TMOE_CHROOT_PREFIX} chmod u+w "${DEBIAN_CHROOT}/root"
 
-curl -sLo zsh-i.sh 'https://gitee.com/mo2/zsh/raw/master/zsh.sh'
+curl -sLo zsh-i.sh 'https://raw.githubusercontent.com/s200801005/linux/main/zsh.sh'
 sed -i 's:#!/data/data/com.termux/files/usr/bin/env bash:#!/usr/bin/env bash:' zsh-i.sh
-curl -Lo zsh.sh 'https://gitee.com/mo2/linux/raw/master/zsh.sh'
+curl -Lo zsh.sh 'https://raw.githubusercontent.com/s200801005/linux/main/zsh.sh'
 chmod +x zsh.sh zsh-i.sh
 ${TMOE_CHROOT_PREFIX} cp zsh-i.sh zsh.sh ${DEBIAN_CHROOT}/root
 #chmod u+x ./*
@@ -1396,7 +1396,7 @@ cat >vnc-autostartup <<-'EndOfFile'
 		git fetch --depth=1
 		git reset --hard origin/master
 		git pull origin master --allow-unrelated-histories
-		curl -Lv -o ${LOCAL_BIN_DIR}/debian-i 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+		curl -Lv -o ${LOCAL_BIN_DIR}/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/'
 		chmod +x ${LOCAL_BIN_DIR}/debian-i
 		${LOCAL_BIN_DIR}/debian-i passwd
 	fi
@@ -1826,7 +1826,7 @@ cat >'.profile' <<-'ENDOFbashPROFILE'
 	        opkg install libustream-openssl ca-bundle ca-certificates bash
 	    fi
 	    bash zsh.sh
-	    # ash -c "$(wget --no-check-certificate -O- 'https://gitee.com/mo2/zsh/raw/master/zsh.sh')"
+	    # ash -c "$(wget --no-check-certificate -O- 'https://raw.githubusercontent.com/s200801005/linux/main/zsh.sh')"
 	}
 	########################
 	TMOE_LOCALE_FILE=/usr/local/etc/tmoe-linux/locale.txt
@@ -2069,7 +2069,7 @@ cat >'.profile' <<-'ENDOFbashPROFILE'
 	    neofetch
 	    #rm -f vnc* zsh* .profile
 	    #mv -f .profile.bak .profile 2>/dev/null
-	    #wget -qO zsh.sh 'https://gitee.com/mo2/zsh/raw/master/zsh.sh'
+	    #wget -qO zsh.sh 'https://raw.githubusercontent.com/s200801005/linux/main/zsh.sh'
 	    #sed -i '1 c\#!/usr/bin/env bash' zsh.sh
 	    #chmod +x zsh.sh
 	    echo '检测到您当前的系统为Void GNU/Linux,若配置出错，则请手动输debian-i'
@@ -2230,7 +2230,7 @@ cat >'.profile' <<-'ENDOFbashPROFILE'
 	    bash zsh.sh
 	    debian-i
 	    #bash zsh-i.sh
-	    #bash -c "$(curl -LfsS 'https://gitee.com/mo2/zsh/raw/master/zsh.sh')" || bash -c "$(wget -qO- 'https://gitee.com/mo2/zsh/raw/master/zsh.sh')"
+	    #bash -c "$(curl -LfsS 'https://raw.githubusercontent.com/s200801005/linux/main/zsh.sh')" || bash -c "$(wget -qO- 'https://raw.githubusercontent.com/s200801005/linux/main/zsh.sh')"
 	}
 	################
 	if ! grep -Eq 'debian|ubuntu' '/etc/os-release'; then

@@ -28,7 +28,7 @@ main() {
 		elif [ -e "/tmp/.tmoe-linux-mirror.sh" ]; then
 			source /tmp/.tmoe-linux-mirror.sh
 		else
-			curl -Lv -o /tmp/.tmoe-linux-mirror.sh "https://raw.githubusercontent.com/s200801005/linux/main/mirror.sh" || wget -O /tmp/.tmoe-linux-mirror.sh "hhttps://raw.githubusercontent.com/s200801005/linux/main/mirror.sh"
+			curl -Lv -o /tmp/.tmoe-linux-mirror.sh "https://raw.githubusercontent.com/s200801005/linux/main/tools/sources/mirror.sh" || wget -O /tmp/.tmoe-linux-mirror.sh "https://raw.githubusercontent.com/s200801005/linux/main/tools/sources/mirror.sh"
 			chmod +x /tmp/.tmoe-linux-mirror.sh
 			source /tmp/.tmoe-linux-mirror.sh
 		fi
@@ -62,7 +62,7 @@ main() {
 		elif [ -e "/tmp/.tmoe-linux-mirror.sh" ]; then
 			source /tmp/.tmoe-linux-mirror.sh --autoswitch
 		else
-			curl -Lvo /tmp/.tmoe-linux-mirror.sh "https://gitee.com/mo2/linux/raw/master/tools/sources/mirror.sh"
+			curl -Lvo /tmp/.tmoe-linux-mirror.sh "https://raw.githubusercontent.com/s200801005/linux/main/tools/sources/mirror.sh"
 			chmod +x /tmp/.tmoe-linux-mirror.sh
 			source /tmp/.tmoe-linux-mirror.sh --autoswitch
 		fi
