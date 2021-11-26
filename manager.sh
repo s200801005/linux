@@ -195,35 +195,35 @@ gnu_linux() {
 			sudo -E bash ${TMOE_GIT_DIR}/manager.sh || su -c "bash manager.sh"
 		else
 			if [ -e "/usr/bin/curl" ]; then
-				sudo -E bash -c "$(curl -LfsS https://gitee.com/mo2/linux/raw/master/debian.sh)" ||
-					su -c "$(curl -LfsS https://gitee.com/mo2/linux/raw/master/debian.sh)"
+				sudo -E bash -c "$(curl -LfsS https://raw.githubusercontent.com/s200801005/linux/main/debian.sh)" ||
+					su -c "$(curl -LfsS https://raw.githubusercontent.com/s200801005/linux/main/debian.sh)"
 			else
-				sudo -E bash -c "$(wget -qO- https://gitee.com/mo2/linux/raw/master/debian.sh)" ||
-					su -c "$(wget -qO- https://gitee.com/mo2/linux/raw/master/debian.sh)"
+				sudo -E bash -c "$(wget -qO- https://raw.githubusercontent.com/s200801005/linux/main/debian.sh)" ||
+					su -c "$(wget -qO- https://raw.githubusercontent.com/s200801005/linux/main/debian.sh)"
 			fi
 			#此处一定为debian.sh，而非manager.sh
 		fi
 		exit 0
 	fi
 	##############
-	if grep -Eq 'debian|ubuntu|deepin' "/etc/os-release"; then
+	if grep -Eq 'debian|ubuntu|deepin' "/etc/entware_release"; then
 		LINUX_DISTRO='debian'
 		TMOE_INSTALLATON_COMMAND='apt install -y'
 		TMOE_REMOVAL_COMMAND='apt purge -y'
-		if grep -q 'ubuntu' /etc/os-release; then
+		if grep -q 'ubuntu' /etc/entware_release; then
 			DEBIAN_DISTRO='ubuntu'
 		elif [ "$(cat /etc/issue | cut -c 1-4)" = "Kali" ]; then
 			DEBIAN_DISTRO='kali'
-		elif grep -q 'deepin' /etc/os-release; then
+		elif grep -q 'deepin' /etc/entware_release; then
 			DEBIAN_DISTRO='deepin'
 		fi
 
-	elif grep -Eq "opkg|entware" '/opt/etc/opkg.conf' 2>/dev/null || grep -q 'openwrt' "/etc/os-release"; then
+	elif grep -Eq "opkg|entware" '/opt/etc/opkg.conf' 2>/dev/null || grep -q 'openwrt' "/etc/entware_release"; then
 		LINUX_DISTRO='openwrt'
 		TMOE_INSTALLATON_COMMAND='opkg install'
 		TMOE_REMOVAL_COMMAND='opkg remove'
 		cd /tmp
-		wget --no-check-certificate -qO "router-debian.bash" https://gitee.com/mo2/linux/raw/master/manager.sh
+		wget --no-check-certificate -qO "router-debian.bash" https://raw.githubusercontent.com/s200801005/linux/main/manager.sh
 		chmod +x 'router-debian.bash'
 		#bash -c "$(cat 'router-zsh.bash' |sed 's@/usr/bin@/opt/bin@g' |sed 's@-e /bin@-e /opt/bin@g' |sed 's@whiptail@dialog@g')"
 		sed -i 's@/usr/bin@/opt/bin@g' 'router-debian.bash'
@@ -233,34 +233,34 @@ gnu_linux() {
 		sed -i 's@bash router-debian.bash@#&@' 'router-debian.bash'
 		bash router-debian.bash
 
-	elif grep -Eqi "Fedora|CentOS|Red Hat|redhat" '/etc/os-release'; then
+	elif grep -Eqi "Fedora|CentOS|Red Hat|redhat" '/etc/entware_release'; then
 		LINUX_DISTRO='redhat'
 		TMOE_REMOVAL_COMMAND='dnf remove -y'
 		TMOE_INSTALLATON_COMMAND='dnf install -y --skip-broken'
-		if [ "$(cat /etc/os-release | grep 'ID=' | head -n 1 | cut -d '"' -f 2)" = "centos" ]; then
+		if [ "$(cat /etc/entware_release | grep 'ID=' | head -n 1 | cut -d '"' -f 2)" = "centos" ]; then
 			REDHAT_DISTRO='centos'
-		elif grep -q 'Sliverblue' "/etc/os-release"; then
+		elif grep -q 'Sliverblue' "/etc/entware_release"; then
 			echo "Sorry,不支持Fedora SliverBlue"
-		elif grep -q 'Fedora' "/etc/os-release"; then
+		elif grep -q 'Fedora' "/etc/entware_release"; then
 			REDHAT_DISTRO='fedora'
 		fi
 
-	elif grep -q "Alpine" '/etc/issue' || grep -q "Alpine" '/etc/os-release'; then
+	elif grep -q "Alpine" '/etc/issue' || grep -q "Alpine" '/etc/entware_release'; then
 		LINUX_DISTRO='alpine'
 		TMOE_INSTALLATON_COMMAND='apk add'
 		TMOE_REMOVAL_COMMAND='apk del'
 
-	elif grep -Eq "Arch|Manjaro" '/etc/os-release' || grep -Eq "Arch|Manjaro" '/etc/issue'; then
+	elif grep -Eq "Arch|Manjaro" '/etc/entware_release' || grep -Eq "Arch|Manjaro" '/etc/issue'; then
 		LINUX_DISTRO='arch'
 		TMOE_REMOVAL_COMMAND='pacman -Rsc'
 		TMOE_INSTALLATON_COMMAND='pacman -Syu --noconfirm'
 
-	elif grep -Eq "gentoo|funtoo" '/etc/os-release'; then
+	elif grep -Eq "gentoo|funtoo" '/etc/entware_release'; then
 		LINUX_DISTRO='gentoo'
 		TMOE_INSTALLATON_COMMAND='emerge -vk'
 		TMOE_REMOVAL_COMMAND='emerge -C'
 
-	elif grep -qi 'suse' '/etc/os-release'; then
+	elif grep -qi 'suse' '/etc/entware_release'; then
 		LINUX_DISTRO='suse'
 		TMOE_INSTALLATON_COMMAND='zypper in -y'
 		TMOE_REMOVAL_COMMAND='zypper rm'
@@ -580,14 +580,14 @@ gnu_linux() {
 	fi
 
 	if [ ! -z "${LINUX_DISTRO}" ]; then
-		if grep -q 'PRETTY_NAME=' /etc/os-release; then
-			OSRELEASE="$(cat /etc/os-release | grep 'PRETTY_NAME=' | head -n 1 | cut -d '=' -f 2)"
+		if grep -q 'PRETTY_NAME=' /etc/entware_release; then
+			OSRELEASE="$(cat /etc/entware_release | grep 'PRETTY_NAME=' | head -n 1 | cut -d '=' -f 2)"
 		else
-			OSRELEASE="$(cat /etc/os-release | grep -v 'VERSION' | grep 'ID=' | head -n 1 | cut -d '=' -f 2)"
+			OSRELEASE="$(cat /etc/entware_release | grep -v 'VERSION' | grep 'ID=' | head -n 1 | cut -d '=' -f 2)"
 		fi
 
 		if (whiptail --title "您想要对这个小可爱做什么 " --yes-button "Tool" --no-button "Manager" --yesno "检测到您使用的是${OSRELEASE} ${WSL}\n您是想要启动software安装工具，\n还是system管理工具？\nDo you want to start the software installation tool \nor the system manager? ♪(^∇^*) " 0 50); then
-			#bash <(curl -LfsS 'https://gitee.com/mo2/linux/raw/master/tool.sh')
+			#bash <(curl -LfsS 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh')
 			if [ -e "${TMOE_GIT_DIR}/tool.sh" ]; then
 				if [ $(command -v sudo) ]; then
 					sudo -E bash ${TMOE_GIT_DIR}/tool.sh
@@ -596,9 +596,9 @@ gnu_linux() {
 				fi
 			else
 				if [ "${LINUX_DISTRO}" = "alpine" ] || [ ! $(command -v curl) ]; then
-					wget -O /tmp/.tmoe-linux-tool.sh 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+					wget -O /tmp/.tmoe-linux-tool.sh 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 				else
-					curl -Lv -o /tmp/.tmoe-linux-tool.sh 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+					curl -Lv -o /tmp/.tmoe-linux-tool.sh 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 				fi
 				source /tmp/.tmoe-linux-tool.sh
 			fi
@@ -618,10 +618,10 @@ check_release_version() {
 	if [ "${LINUX_DISTRO}" = "Android" ]; then
 		OSRELEASE="Android"
 		CHROOT_NOTE='(已向Android开放)'
-	elif grep -q 'NAME=' /etc/os-release; then
-		OSRELEASE=$(cat /etc/os-release | grep -v 'PRETTY' | grep 'NAME=' | head -n 1 | cut -d '=' -f 2 | cut -d '"' -f 2)
-	elif grep -q 'ID=' /etc/os-release; then
-		OSRELEASE=$(cat /etc/os-release | grep -v 'VERSION' | grep 'ID=' | head -n 1 | cut -d '=' -f 2)
+	elif grep -q 'NAME=' /etc/entware_release; then
+		OSRELEASE=$(cat /etc/entware_release | grep -v 'PRETTY' | grep 'NAME=' | head -n 1 | cut -d '=' -f 2 | cut -d '"' -f 2)
+	elif grep -q 'ID=' /etc/entware_release; then
+		OSRELEASE=$(cat /etc/entware_release | grep -v 'VERSION' | grep 'ID=' | head -n 1 | cut -d '=' -f 2)
 	else
 		OSRELEASE='GNU/Linux'
 	fi
@@ -1356,7 +1356,7 @@ install_gnu_linux_container() {
 
 	else
 		check_and_view_the_eula
-		#bash -c "$(curl -fLsS 'https://gitee.com/mo2/linux/raw/master/install.sh')"
+		#bash -c "$(curl -fLsS 'https://raw.githubusercontent.com/s200801005/linux/main/install.sh')"
 	fi
 }
 ################################################
@@ -2283,8 +2283,8 @@ space_occupation() {
 }
 ########################################################################
 update_tmoe_linux_manager() {
-	#curl -L -o ${PREFIX}/bin/debian-i 'https://gitee.com/mo2/linux/raw/master/debian.sh'
-	aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://gitee.com/mo2/linux/raw/master/manager.sh' || curl -Lo ${PREFIX}/bin/debian-i 'https://gitee.com/mo2/linux/raw/master/manager.sh' || sudo -E aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://gitee.com/mo2/linux/raw/master/manager.sh'
+	#curl -L -o ${PREFIX}/bin/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/debian.sh'
+	aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/manager.sh' || curl -Lo ${PREFIX}/bin/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/manager.sh' || sudo -E aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/manager.sh'
 	if [ "${LINUX_DISTRO}" != "Android" ]; then
 		sed -i '1 c\#!/usr/bin/env bash' ${PREFIX}/bin/debian-i
 	fi
@@ -2980,7 +2980,7 @@ tmoe_qemu_user_manager() {
 #####################
 git_clone_tmoe_linux_container_file() {
 	if [ ! $(command -v debian-i) ]; then
-		aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://gitee.com/mo2/linux/raw/master/manager.sh' || curl -Lo ${PREFIX}/bin/debian-i 'https://gitee.com/mo2/linux/raw/master/manager.sh' || sudo -E aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://gitee.com/mo2/linux/raw/master/manager.sh'
+		aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/manager.sh' || curl -Lo ${PREFIX}/bin/debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/manager.sh' || sudo -E aria2c --allow-overwrite=true -d ${PREFIX}/bin -o debian-i 'https://raw.githubusercontent.com/s200801005/linux/main/manager.sh'
 		chmod +x ${PREFIX}/bin/debian-i
 	fi
 	TMOE_TRUE_TEMP_FOLDER='.TMOE_LINUX_CONTAINER_TEMP_FOLDER'
@@ -3057,9 +3057,9 @@ debian_buster_arm64_xfce_recovery_package() {
 #################
 install_debian_sid_via_tuna() {
 	if [ "${LINUX_DISTRO}" != 'iSH' ]; then
-		bash -c "$(curl -fLsS 'https://gitee.com/mo2/linux/raw/master/install.sh')"
+		bash -c "$(curl -fLsS 'https://raw.githubusercontent.com/s200801005/linux/main/install.sh')"
 	else
-		curl -LfsS 'https://gitee.com/mo2/linux/raw/master/install.sh' | bash
+		curl -LfsS 'https://raw.githubusercontent.com/s200801005/linux/main/install.sh' | bash
 	fi
 }
 #################
@@ -3422,7 +3422,7 @@ switch_termux_rootfs_to_linux() {
 ####################
 tmoe_install_xfce() {
 	if [ "${LINUX_DISTRO}" != 'Android' ]; then
-		aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+		aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 		bash /tmp/.tmoe-linux-tool.sh --install-gui
 		exit 0
 	fi
@@ -3463,7 +3463,7 @@ tmoe_install_xfce() {
 ##########
 tmoe_modify_vnc_conf() {
 	if [ "${LINUX_DISTRO}" != 'Android' ]; then
-		aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+		aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 		bash /tmp/.tmoe-linux-tool.sh --modify_remote_desktop_config
 		exit 0
 	fi
@@ -3803,7 +3803,7 @@ edit_sources_list_manually() {
 #########
 tmoe_remove_xfce() {
 	if [ "${LINUX_DISTRO}" != 'Android' ]; then
-		aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+		aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 		bash /tmp/.tmoe-linux-tool.sh --remove_gui
 		exit 0
 	fi
@@ -5009,7 +5009,7 @@ custom_mint_version() {
 ######################
 ######################
 gnu_linux_mirror_source_manager() {
-	aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+	aria2c --allow-overwrite=true -d /tmp -o '.tmoe-linux-tool.sh' 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 	bash /tmp/.tmoe-linux-tool.sh --mirror-list
 }
 ##################
@@ -5018,9 +5018,9 @@ gnu_linux_mirror_source_manager() {
 gnu_linux_sources_list() {
 	if [ "${LINUX_DISTRO}" != "alpine" ]; then
 		if [ ! $(command -v curl) ]; then
-			wget -O /tmp/.tmoe-linux-tool.sh 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+			wget -O /tmp/.tmoe-linux-tool.sh 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 		else
-			curl -sLo /tmp/.tmoe-linux-tool.sh 'https://gitee.com/mo2/linux/raw/master/tool.sh'
+			curl -sLo /tmp/.tmoe-linux-tool.sh 'https://raw.githubusercontent.com/s200801005/linux/main/tool.sh'
 		fi
 		bash /tmp/.tmoe-linux-tool.sh -tuna
 	else
