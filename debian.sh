@@ -74,17 +74,17 @@ tmoe_locale_gen() {
 }
 ############
 if [ $(command -v curl) ]; then
-	curl -Lvo .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
+	curl -Lvo .tmoe-linux.sh https://raw.githubusercontent.com/s200801005/linux/main/manager.sh
 elif [ $(command -v aria2c) ]; then
-	aria2c --no-conf --allow-overwrite=true -o .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
+	aria2c --no-conf --allow-overwrite=true -o .tmoe-linux.sh https://raw.githubusercontent.com/s200801005/linux/main/manager.sh
 elif [ $(command -v wget) ]; then
-	wget -O .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
+	wget -O .tmoe-linux.sh https://raw.githubusercontent.com/s200801005/linux/main/manager.sh
 else
 	#带三个#为docker容器专用
 	###tuna_mirror
 	DEPENDENCY_01='wget'
 	install_dependency
-	wget -O .tmoe-linux.sh https://gitee.com/mo2/linux/raw/master/manager.sh
+	wget -O .tmoe-linux.sh https://raw.githubusercontent.com/s200801005/linux/main/manager.sh
 fi
 #用于docker容器自动配置区域与语言环境。
 ###tmoe_locale_gen
